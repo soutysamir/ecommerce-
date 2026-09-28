@@ -1,0 +1,284 @@
+<section class="mx-10">
+  <div class="mx-auto text-center">
+    <h1 class="text-3xl font-bold text-[#006BFF] p-2">Category</h1>
+    @if (selectedCategoryId===null) {
+    <h2 class="text-4xl font-font-medium">AllProducts</h2>
+    }@else if (selectedCategoryId!==null) {
+    <h2 class="text-4xl font-medium">
+      {{ selectedCategoryName }}
+    </h2>
+    }
+  </div>
+
+  <button
+    data-drawer-target="sidebar-multi-level-sidebar"
+    data-drawer-toggle="sidebar-multi-level-sidebar"
+    aria-controls="sidebar-multi-level-sidebar"
+    type="button"
+    (click)="clickedBtn()"
+    class="inline-flex flex-wrap z-50 items-center bg-[#08C2FF] transition-transform duration-[1s] ease-in-out -rotate-90 top-40 fixed -left-8 gap-3 p-2 text-gray-950 rounded-lg sm:hidden dark:text-gray-400"
+    [class.inline-flex]="!clicked"
+    [class.hidden]="clicked"
+  >
+    <span class="rotate-360 font-medium text-lg">Filter</span>
+    <svg
+      class="w-6 h-6 text-gray-950 dark:text-white"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 20 20"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M7.75 4H19M7.75 4a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 4h2.25m13.5 6H19m-2.25 0a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 10h11.25m-4.5 6H19M7.75 16a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 16h2.25"
+      />
+    </svg>
+  </button>
+
+  <div class="flex justify-between gap-6">
+    <div class="sm:w-[350px] flex-none rounded-lg transition-all">
+      <aside
+        id="sidebar-multi-level-sidebar"
+        class="fixed top-0 left-0 z-40 sm:z-0 w-72 h-screen transition-all duration-300 ease-in-out rounded-lg -translate-x-full sm:translate-x-0 sm:relative sm:w-[340px]"
+        aria-label="Sidebar"
+        [class.-translate-x-full]="!clicked"
+        [class.translate-x-0]="clicked"
+      >
+        <div
+          class="h-full rounded-lg px-3 py-6 overflow-y-auto bg-[#08C2FF] dark:bg-gray-800"
+        >
+          <button
+            type="button"
+            (click)="clickedBtn()"
+            data-drawer-hide="drawer-example"
+            aria-controls="drawer-example"
+            class="text-gray-900 bg-transparent pt-10 rounded-lg sm:hidden text-md w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center"
+            [class.translate-x-0]="!clicked"
+            [class.-translate-x-full]="clicked"
+          >
+            <svg
+              class="w-3 h-3 text-xl font-bold text-black"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+              />
+            </svg>
+            <span class="sr-only">Close menu</span>
+          </button>
+
+          <ul
+            class="space-y-2 font-medium sm:py-4 transition-all duration-300 ease-in-out my-20"
+          >
+            <li>
+              <a class="flex items-center p-2 text-gray-900 rounded-lg">
+                <span class="ms-3 font-bold text-3xl">Filter By</span>
+              </a>
+            </li>
+
+            <li>
+              <button
+                type="button"
+                class="flex items-center w-full text-base text-gray-900 rounded-lg"
+                aria-controls="dropdown-example"
+                data-collapse-toggle="dropdown-example"
+                (click)="showCategoriesData()"
+              >
+                <a
+                  type="button"
+                  class="flex-1 text-left rtl:text-right mx-2 my-5 font-bold text-xl text-black whitespace-nowrap"
+                  >category</a
+                >
+                <svg
+                  class="w-3 h-3"
+                  [class.rotate-0]="!clickedDropdown"
+                  [class.rotate-180]="clickedDropdown"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
+              </button>
+              <ul
+                id="dropdown-example"
+                class="py-2 space-y-2 transition-all"
+                [class.hidden]="!clickedDropdown"
+                [class.block]="clickedDropdown"
+              >
+                <li>
+                  <a
+                    [class.underline]="selectedCategoryId === null"
+                    [class.no-underlin]="selectedCategoryId !== null"
+                    (click)="getData()"
+                    type="button"
+                    class="flex items-center cursor-pointer text-xl p-3 text-gray-900 transition duration-[1s] rounded-lg pl-11 group hover:bg-[#FFF100] dark:text-white dark:hover:bg-[#FFF100]"
+                    >All Products</a
+                  >
+                </li>
+                @for (cat of category; track cat._id) {
+                <li
+                  [class.underline]="selectedCategoryId === cat._id"
+                  [class.no-underline]="selectedCategoryId !== cat._id"
+                  (click)="databyCategory(cat._id, limit, p)"
+                >
+                  <a
+                    type="button"
+                    class="flex items-center text-xl p-3 cursor-pointer text-gray-900 transition duration-[1s] rounded-lg pl-11 group hover:bg-[#FFF100] dark:text-white dark:hover:bg-[#FFF100]"
+                    >{{ cat.name }}</a
+                  >
+                </li>
+                }
+              </ul>
+            </li>
+
+            <li>
+              <div class="my-5 mx-2">
+                <h3 class="font-bold text-xl text-black mb-6">price</h3>
+                <ngx-slider
+                  [(value)]="minValue"
+                  [(highValue)]="maxValue"
+                  [options]="options"
+                ></ngx-slider>
+                <button
+                  (click)="applyPriceFilter()"
+                  class="bg-[#FFF100] cart text-lg font-semibold capitalize block mx-auto px-10 py-2 rounded-md p-6 m-4"
+                >
+                  Apply
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+    <div class="w-64 flex-auto mt-10">
+      <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        @for (prod of productData | paginate: { itemsPerPage: limit,
+        currentPage: p, totalItems: result}; track prod._id ) {
+        <div
+          class="bg-white hover:scale-105 hover:shadow-2xl animate-fadeIn rounded-md cursor-pointer transition-all duration-[.5s] overflow-hidden shadow-lg relative card"
+        >
+          <div [routerLink]="['/details', prod.id]">
+            <div class="m-2 bg-[#ccecf8] rounded-md">
+              <img
+                [src]="prod.imageCover"
+                class="w-full h-[220px] object-contain"
+                [alt]="prod.title"
+              />
+            </div>
+            <div class="card-body px-1 py-1">
+              <div>
+                <h4 class="text-xl px-2 font-bold text-[#006BFF]">
+                  {{ prod.category.name }}
+                </h4>
+                <h3 class="font-semibold text-lg px-2">
+                  {{ prod.title.split(" ", 2).join(" ") }}
+                </h3>
+              </div>
+
+              <div class="flex items-center px-1 gap-1">
+                @for (star of getStarsArray(prod.ratingsAverage); track $index)
+                {
+                <ng-container>
+                  @if (star === 'full') {
+                  <i class="fa-solid fa-star text-[#FFF100]"></i>
+                  } @else if (star === 'half') {
+                  <i class="fa-solid fa-star-half-stroke text-[#FFF100]"></i>
+                  } @else {
+                  <i class="fa-regular fa-star text-gray-400"></i>
+                  }
+                </ng-container>
+                }
+                <span class="ml-2 font-semibold text-sm text-gray-600">
+                  ({{ prod.ratingsQuantity }}+)
+                </span>
+              </div>
+              <div class="flex flex-col gap-2 px-1 mt-5">
+                <div class="flex items-center gap-3">
+                  <span class="text-lg font-bold text-black">
+                    {{ prod.priceAfterDiscount || prod.price }}
+                    EGP
+                  </span>
+
+                  @if (prod.priceAfterDiscount) {
+                  <span
+                    class="line-through font-semibold text-gray-500 text-md"
+                  >
+                    {{ prod.price }} EGP
+                  </span>
+                  <span
+                    class="bg-[#08C2FF] text-black absolute top-48 left-2 text-xl font-bold px-2 py-1 rounded-sm"
+                  >
+                    -{{
+                      getSalePercentage(prod.price, prod.priceAfterDiscount)
+                    }}%
+                  </span>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute top-1 right-0 p-1">
+            <button
+              class="w-[2.5rem] h-[40px] border absolute top-3 right-3 flex justify-center items-center z-30 rounded-full cursor-pointer"
+              (click)="addRemoveWishlist(prod.id!)"
+              [disabled]="isloadingWishlist()"
+            >
+              @if (isloadingWishlist() === prod.id ) {
+              <i class="fa-solid fa-spinner fa-spin"></i>
+              }@else { @if (wishlistdata().includes(prod.id!)) {
+              <i class="fa-heart fa-solid text-2xl text-[#006BFF]"></i>
+
+              }@else if (!wishlistdata().includes(prod.id!)) {
+              <i class="fa-regular fa-heart text-2xl text-[#006BFF]"></i>
+
+              } }
+            </button>
+          </div>
+
+          <button
+            (click)="addToCart(prod._id)"
+            class="bg-[#08C2FF] cart text-lg font-semibold capitalize block mx-auto px-2 py-2 rounded-md w-full"
+          >
+            Add to Cart
+          </button>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  @if (!isCategoryEmpty) {
+  <div class="pt-10 flex justify-center">
+    <pagination-controls
+      (pageChange)="pageChangeEvent($event)"
+    ></pagination-controls>
+  </div>
+  }@else {
+  <div class="text-center py-4">
+    <img
+      class="w-[70%] m-auto"
+      src="images/no-item-found-here.png"
+      alt="no-item-found-here"
+    />
+  </div>
+  }
+</section>

@@ -1,0 +1,188 @@
+<!-- <section class="container">
+  <div class="grid sm:grid-cols-[70%_minmax(0,1fr)]">
+    <div>
+      <owl-carousel-o [options]="customMainSlider">
+        <ng-template carouselSlide
+          ><img
+            src="/images/slider-image-3.jpeg"
+            class="w-full h-[300px]"
+            alt=""
+        /></ng-template>
+        <ng-template carouselSlide
+          ><img src="/images/img2.avif" class="w-full h-[300px]" alt=""
+        /></ng-template>
+        <ng-template carouselSlide
+          ><img src="/images/img3.avif" class="w-full h-[300px]" alt=""
+        /></ng-template>
+        <ng-template carouselSlide
+          ><img src="/images/img4.avif" class="w-full h-[300px]" alt=""
+        /></ng-template>
+        <ng-template carouselSlide
+          ><img src="/images/img5.avif" class="w-full h-[300px]" alt=""
+        /></ng-template>
+        <ng-template carouselSlide
+          ><img src="/images/img6.avif" class="w-full h-[300px]" alt=""
+        /></ng-template>
+        <ng-template carouselSlide
+          ><img src="/images/img7.avif" class="w-full h-[300px]" alt=""
+        /></ng-template>
+      </owl-carousel-o>
+    </div>
+    <div>
+      <img src="/images/banner-4.jpeg" class="w-full h-[150px]" alt="" />
+      <img
+        src="/images/grocery-banner-2.jpeg"
+        class="w-full h-[150px]"
+        alt=""
+      />
+    </div>
+  </div>
+</section> -->
+
+<section>
+  <!-- <div class="relative pt-10">
+    <img
+      src="/images/summer-sale-instagram-stories-templates_1120353-329.avif"
+      class="w-full h-full object-cover"
+    />
+
+    <div class="absolute inset-0 flex items-center justify-center">
+      <p class="text-white text-4xl font-semibold">مرحبًا بك</p>
+    </div>
+  </div> -->
+  <div class="relative w-full h-screen overflow-hidden object-contain">
+    <!-- الصورة -->
+    <img
+      src="/images/home-new-bg-free-img.jpg"
+      alt="Cover Photo"
+      class="w-full h-full object-cover"
+    />
+
+    <!-- الـ Overlay الأسود -->
+    <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+    <!-- النص فوق الصورة -->
+    <div class="absolute inset-0 flex items-center p-5 w-[35%]">
+      <h1 class="">
+        <h5 class="text-white font-normal text-lg">New in town</h5>
+        <h1 class="text-white font-bold capitalize font-mono text-4xl">
+          The new beauty collection
+        </h1>
+        <p class="text-white font-normal text-lg">
+          This new collection brings with it the most exciting lorem ipsum dolor
+          sit amet.
+        </p>
+      </h1>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <h2 class="text-3xl text-[#006BFF] p-8">Popular Categories</h2>
+  <owl-carousel-o [options]="customOptions">
+    @for (cat of category; track cat._id) {
+    <ng-template carouselSlide>
+      <div>
+        <img [src]="cat.image" class="w-full h-[250px]" [alt]="cat.name" />
+        <h3
+          role="button"
+          class="text-[#006BFF] text-center mx-auto text-md p-2"
+        >
+          {{ cat.name }}
+        </h3>
+      </div>
+    </ng-template>
+    }
+  </owl-carousel-o>
+</section>
+
+<section class="container pb-10">
+  <h2 class="text-3xl text-[#006BFF] p-8">popular products</h2>
+  <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+    @for (prod of products.slice(0,12); track prod.id) {
+    <div
+      class="bg-white hover:scale-105 hover:shadow-2xl animate-fadeIn rounded-md cursor-pointer transition-all duration-[.5s] overflow-hidden shadow-lg relative card"
+    >
+      <div [routerLink]="['/details', prod.id]">
+        <div class="m-2 bg-[#ccecf8] rounded-md">
+          <img
+            [src]="prod.imageCover"
+            class="w-full h-[220px] object-contain"
+            [alt]="prod.title"
+          />
+        </div>
+        <div class="card-body px-1 py-1">
+          <div>
+            <h4 class="text-xl px-2 font-bold text-[#006BFF]">
+              {{ prod.category.name }}
+            </h4>
+            <h3 class="font-semibold text-lg px-2">
+              {{ prod.title.split(" ", 2).join(" ") }}
+            </h3>
+          </div>
+
+          <div class="flex items-center px-1 gap-1">
+            @for (star of getStarsArray(prod.ratingsAverage); track $index) {
+            <ng-container>
+              @if (star === 'full') {
+              <i class="fa-solid fa-star text-[#FFF100]"></i>
+              } @else if (star === 'half') {
+              <i class="fa-solid fa-star-half-stroke text-[#FFF100]"></i>
+              } @else {
+              <i class="fa-regular fa-star text-gray-400"></i>
+              }
+            </ng-container>
+            }
+            <span class="ml-2 font-semibold text-sm text-gray-600">
+              ({{ prod.ratingsQuantity }}+)
+            </span>
+          </div>
+          <div class="flex flex-col gap-2 px-1 mt-5">
+            <div class="flex items-center gap-3">
+              <span class="text-lg font-bold text-black">
+                {{ prod.priceAfterDiscount || prod.price }}
+                EGP
+              </span>
+
+              @if (prod.priceAfterDiscount) {
+              <span class="line-through font-semibold text-gray-500 text-md">
+                {{ prod.price }} EGP
+              </span>
+              <span
+                class="bg-[#08C2FF] text-black absolute top-48 left-2 text-xl font-bold px-2 py-1 rounded-sm"
+              >
+                -{{ getSalePercentage(prod.price, prod.priceAfterDiscount) }}%
+              </span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="absolute top-1 right-0 p-1">
+        <button
+          class="w-[2.5rem] h-[40px] border absolute top-3 right-3 flex justify-center items-center z-30 rounded-full cursor-pointer"
+          (click)="addRemoveWishlist(prod.id!)"
+          [disabled]="isloadingWishlist()"
+        >
+          @if (isloadingWishlist() === prod.id ) {
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          }@else { @if (wishlistdata().includes(prod.id!)) {
+          <i class="fa-heart fa-solid text-2xl text-[#006BFF]"></i>
+
+          }@else if (!wishlistdata().includes(prod.id!)) {
+          <i class="fa-regular fa-heart text-2xl text-[#006BFF]"></i>
+
+          } }
+        </button>
+      </div>
+
+      <button
+        (click)="addToCart(prod._id)"
+        class="bg-[#08C2FF] cart text-lg font-semibold capitalize block mx-auto px-2 py-2 rounded-md w-full"
+      >
+        Add to Cart
+      </button>
+    </div>
+    }
+  </div>
+</section>

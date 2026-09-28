@@ -1,0 +1,28 @@
+<section class="container mx-auto px-4 py-8">
+  <div>
+    <h1 class="text-3xl font-bold mb-4 text-center text-[#006BFF]">
+      All Popular Categories
+    </h1>
+    <h3 class="text-lg mb-8 font-medium text-center text-[#08C2FF]">
+      {{ length }} Categories Found
+    </h3>
+
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-10">
+      @for (cat of categoryData ; track cat._id ) {
+      <div>
+        <div
+          [routerLink]="['/categorydetails', cat._id]"
+          class="bg-white hover:scale-105 hover:shadow-2xl animate-fadeIn rounded-2xl shadow-md overflow-hidden transition-all duration-[.5s] cursor-pointer text-center p-4 flex flex-col items-center"
+        >
+          <img
+            [src]="cat.image"
+            [alt]="cat.name"
+            class="w-full h-[200px] transition-all duration-300 hover:scale-x-125 object-contain rounded-2xl mb-4"
+          />
+          <h3 class="text-lg font-semibold text-[#006BFF]">{{ cat.name }}</h3>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>

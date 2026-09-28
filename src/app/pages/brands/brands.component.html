@@ -1,0 +1,35 @@
+<section class="container mx-auto px-4 py-8">
+  <div>
+    <h2 class="text-3xl font-bold mb-4 text-center text-[#006BFF]">
+      All Popular Brands
+    </h2>
+    <h3 class="text-lg mb-8 font-medium text-center text-[#08C2FF]">
+      {{ length }} Brands Found
+    </h3>
+
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+      @for (bran of brandData | paginate: { itemsPerPage: limit, currentPage: p,
+      totalItems: result }; track bran._id) {
+      <div>
+        <div
+          [routerLink]="['/branddetails', bran._id]"
+          class="bg-white hover:scale-105 hover:shadow-2xl animate-fadeIn rounded-2xl shadow-md overflow-hidden transition-all duration-[.5s] cursor-pointer text-center p-4 flex flex-col items-center"
+        >
+          <img
+            [src]="bran.image"
+            [alt]="bran.name"
+            class="w-full h-[200px] object-contain rounded-2xl border-2 border-[#08C2FF] mb-4"
+          />
+          <h3 class="text-lg font-semibold text-[#006BFF]">{{ bran.name }}</h3>
+        </div>
+      </div>
+      }
+    </div>
+
+    <div class="pt-10 flex justify-center">
+      <pagination-controls
+        (pageChange)="pageChangeEvent($event)"
+      ></pagination-controls>
+    </div>
+  </div>
+</section>

@@ -31,10 +31,10 @@
                 "input": "public"
               }
             ],
-            "styles": [
+            "styles": ["node_modules/ngx-spinner/animations/ball-scale-multiple.css","./node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": ["./node_modules/flowbite/dist/flowbite.min.js"],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "ssr": {
@@ -103,5 +103,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "8de28554-ce0e-4adc-93e1-673ed069a878"
   }
 }

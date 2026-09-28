@@ -1,0 +1,103 @@
+@if (wishlistDetails.length) {
+
+<section class="p-10 w-[100%] py-8 shadow-md">
+  <div>
+    <i
+      class="fa-regular fa-heart text-4xl mx-[50%] my-1 text-center text-[#006BFF] dark:text-[#FFF100]"
+    ></i>
+
+    <h1
+      class="text-6xl text-center pb-8 italic font-normal text-[#006BFF] dark:text-[#FFF100]"
+    >
+      My Wishlist
+    </h1>
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 m-3">
+      @for (prod of wishlistDetails; track prod._id) {
+      <div
+        class="bg-white hover:scale-105 shadow-lg hover:shadow-2xl animate-fadeIn rounded-md cursor-pointer transition-all duration-[.5s] overflow-hidden relative card"
+      >
+        <div [routerLink]="['/details', prod._id]">
+          <div class="m-2 bg-[#ccecf8] rounded-md">
+            <img
+              [src]="prod.imageCover"
+              class="w-full h-[220px] object-contain"
+              [alt]="prod.title"
+            />
+          </div>
+          <div class="card-body px-1 py-1">
+            <div>
+              <h4 class="text-xl px-2 font-bold text-[#006BFF]">
+                {{ prod.category.name }}
+              </h4>
+              <h3 class="font-semibold text-lg px-2">
+                {{ prod.title.split(" ", 2).join(" ") }}
+              </h3>
+            </div>
+
+            <div class="flex items-center px-1 gap-1">
+              @for (star of getStarsArray(prod.ratingsAverage); track $index) {
+              <ng-container>
+                @if (star === 'full') {
+                <i class="fa-solid fa-star text-[#FFF100]"></i>
+                } @else if (star === 'half') {
+                <i class="fa-solid fa-star-half-stroke text-[#FFF100]"></i>
+                } @else {
+                <i class="fa-regular fa-star text-gray-400"></i>
+                }
+              </ng-container>
+              }
+              <span class="ml-2 font-semibold text-sm text-gray-600">
+                ({{ prod.ratingsQuantity }}+)
+              </span>
+            </div>
+            <div class="flex flex-col gap-2 px-1 mt-5">
+              <div class="flex items-center gap-3">
+                <span class="text-lg font-bold text-black">
+                  {{ prod.priceAfterDiscount || prod.price }}
+                  EGP
+                </span>
+
+                @if (prod.priceAfterDiscount) {
+                <span class="line-through font-semibold text-gray-500 text-md">
+                  {{ prod.price }} EGP
+                </span>
+                <span
+                  class="bg-[#08C2FF] text-black absolute top-48 left-2 text-xl font-bold px-2 py-1 rounded-sm"
+                >
+                  -{{ getSalePercentage(prod.price, prod.priceAfterDiscount) }}%
+                </span>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute top-1 right-0 p-1">
+          <button
+            class="w-[2.5rem] h-[40px] border absolute top-3 right-3 flex justify-center items-center z-30 rounded-full cursor-pointer"
+            (click)="removeProductFromWishlist(prod.id)"
+          >
+            <i class="fa-heart fa-solid text-2xl text-[#006BFF]"></i>
+          </button>
+        </div>
+
+        <button
+          (click)="addProductToCart(prod.id)"
+          class="bg-[#08C2FF] cart text-lg font-semibold capitalize block mx-auto px-2 py-2 rounded-md w-full"
+        >
+          Add to Cart
+        </button>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+} @else {
+
+<img
+  class="w-[70%] mx-auto"
+  src="images/no-item-found-here.png"
+  alt="no-item-found-here"
+/>
+
+}

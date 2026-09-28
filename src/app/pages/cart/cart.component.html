@@ -1,0 +1,136 @@
+@if (cartDetails.totalCartPrice) {
+<section class="p-2 sm:p-10 w-[100%] py-8 shadow-md">
+  <div class="flex justify-between">
+    <h1 class="text-5xl font-semibold text-[#090F41]">
+      Cart
+      <span class="text-[#006BFF] text-lg font-semibold"
+        >{{ length }} items</span
+      >
+    </h1>
+    <button
+      type="button"
+      (click)="clearCart()"
+      class="text-white bg-[#006BFF] hover:bg-[#006BFF] font-medium rounded-lg text-lg px-4 py-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none"
+    >
+      Clear ALL <i class="fa-solid fa-trash-can text-white text-md"></i>
+    </button>
+  </div>
+  <div class="sm:m-4 grid sm:grid-cols-[70%_minmax(20%,_1fr)] gap-3">
+    <div class="bg-white border-0 rounded-lg shadow-md pb-5 px-3">
+      @for (prod of cartDetails.products; track prod.product._id) {
+      <div>
+        <div class="flex justify-between items-center sm:gap-3 gap-1 sm:p-3">
+          <div
+            [routerLink]="['/details', prod.product.id]"
+            class="flex items-center sm:gap-4 gap-1 cursor-pointer"
+          >
+            <div>
+              <img
+                [src]="prod.product.imageCover"
+                class="w-full h-[200px] object-contain"
+                [alt]="prod.product.title"
+              />
+            </div>
+            <div>
+              <h3 class="text-[#9D9DAA] text-sm font-semibold">
+                {{ prod.product.category.name }}
+              </h3>
+              <h2 class="text-[#090F41] font-semibold text-lg sm:text-2xl">
+                {{ prod.product.title.split(" ", 2).join(" ") }}
+              </h2>
+              <div class="rounded-xl shadow-xl p-1 w-fit">
+                {{ prod.product.ratingsAverage }}
+                <span><i class="fa-solid fa-star text-[#FFF100]"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="sm:p-4">
+            <h3 class="text-xl font-semibold text-right text-[#090F41] mb-3">
+              {{ prod.price }} EGP
+            </h3>
+            <div class="flex justify-between items-center gap-3">
+              <div>
+                <button
+                  class="px-3 py-1 border-2 border-[#006BFF] rounded-lg"
+                  (click)="removeProduct(prod.product._id)"
+                >
+                  <i
+                    class="fas fa-trash-can text-[#006BFF] text-xl font-semibold"
+                  ></i>
+                </button>
+              </div>
+
+              <div
+                class="flex justify-between items-center font-semibold text-md gap-3 border-2 rounded-md border-[#006BFF]"
+              >
+                <button
+                  (click)="updateQuantity(prod.product._id, prod.count - 1)"
+                  class="hover:bg-[#006BFF] transition duration-[.5s] px-2 py-1 rounded"
+                >
+                  -
+                </button>
+                <span>{{ prod.count }}</span>
+                <button
+                  (click)="updateQuantity(prod.product._id, prod.count + 1)"
+                  class="hover:bg-[#006BFF] transition duration-[1s] px-2 py-1 rounded"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-[#08C2FF] pb-0 sm:pb-5"></div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    <div class="bg-white rounded-lg border-2 h-fit">
+      <div class="p-5">
+        <h2 class="text-3xl font-normal text-[#090F41] p-4">Order Summary</h2>
+        <div class="flex justify-between items-center">
+          <p class="p-4 text-lg font-semibold">Price</p>
+          <span class="font-normalt">{{ totalPrice }} EGP</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <p class="p-4 text-lg font-semibold">Shipping</p>
+          <span class="text-[#006BFF] font-semibold">FREE</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <p class="p-4 text-lg font-semibold">Coupon Applied</p>
+          <span class="font-normal">0.00 EGP</span>
+        </div>
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-[#08C2FF] pb-0 sm:pb-5"></div>
+          </div>
+        </div>
+        <div class="flex justify-between items-center">
+          <p class="p-4 text-lg font-semibold">Total</p>
+          <span class="font-normal">{{ totalPrice }} EGP</span>
+        </div>
+        <div class="p-6">
+          <button
+            [routerLink]="['/checkout', cartDetails._id]"
+            type="button"
+            class="text-[#090F41] bg-[#006BFF] capitalize transition-all duration-[.5s] hover:bg-[#FFF100] font-medium rounded-s-full rounded-e-full w-full text-xl px-3 py-2"
+          >
+            Proceed To Chekout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+} @else {
+
+<img
+  class="w-[70%] mx-auto"
+  src="images/no-item-found-here.png"
+  alt="no-item-found-here"
+/>
+
+}

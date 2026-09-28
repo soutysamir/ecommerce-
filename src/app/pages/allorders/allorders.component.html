@@ -1,0 +1,111 @@
+<section class="bg-gray-100 p-8">
+  <h2 class="text-3xl font-semibold text-gray-800 mb-6">Orders Details</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Order Card -->
+    @for (order of userOrder ; track $index) {
+
+    <div class="bg-white rounded-xl shadow p-6 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-semibold text-gray-800">
+          OrderID: {{ order.id }}
+        </h3>
+        <div class="flex gap-2">
+          @if (order.isPaid===false) {
+          <span
+            class="bg-orange-100 text-orange-500 px-3 py-1 rounded-full text-sm"
+            >Unpaid</span
+          >
+          } @else {
+          <span
+            class="bg-orange-100 text-orange-500 px-3 py-1 rounded-full text-sm"
+            >paid</span
+          >
+          } @if (order.isDelivered===false) {
+          <span class="bg-blue-100 text-blue-500 px-3 py-1 rounded-full text-sm"
+            >On Delivery</span
+          >
+          }@else {
+          <span
+            class="bg-orange-100 text-blue-500 px-3 py-1 rounded-full text-sm"
+            >Delivered</span
+          >
+          }
+        </div>
+      </div>
+
+      <!-- Product Box -->
+      <div
+        class="border rounded-lg p-4 flex items-center justify-evenly w-full max-w-2xl h-48 overflow-y-auto overflow-scroll gap-2 flex-row"
+      >
+        @for (item of order.cartItems; track $index) {
+        <img
+          [src]="item.product.imageCover"
+          [alt]="item.product.title"
+          class="w-24 h-24 object-contain"
+        />
+        <p class="text-lg font-medium text-gray-700">
+          {{ item.product.title.split(" ", 2).join(" ") }}
+        </p>
+        }
+      </div>
+      <div class="grid sm:grid-cols-[70%_minmax(20%,_1fr)] gap-3">
+        <!-- Address Info -->
+        <div class="bg-gray-50 rounded-lg p-4 space-y-1 text-sm">
+          <p>
+            <span class="font-bold">Mobile: </span>
+            <span class="text-[#A0A9B7] text-lg px-1 font-semibold">{{
+              order.shippingAddress.phone
+            }}</span>
+          </p>
+          <p>
+            <span class="font-bold">Address: </span>
+            <span class="text-[#A0A9B7] text-lg px-1 font-semibold">
+              {{ order.shippingAddress.address }}</span
+            >
+          </p>
+          <p>
+            <span class="font-bold">City:</span>
+            <span class="text-[#A0A9B7] text-lg px-1 font-semibold">{{
+              order.shippingAddress.city
+            }}</span>
+          </p>
+          <p>
+            <span class="font-bold">Country: </span>
+            <span class="text-[#A0A9B7] text-lg px-1 font-semibold">{{
+              order.shippingAddress.country
+            }}</span>
+          </p>
+          <p>
+            <span class="font-bold">Payment Method: </span>
+            <span class="text-[#A0A9B7] text-lg px-1 font-semibold">{{
+              order.paymentMethodType
+            }}</span>
+          </p>
+        </div>
+
+        <!-- Price Summary -->
+        <div class="bg-gray-50 rounded-lg p-4 text-sm space-y-2">
+          <div class="flex justify-between">
+            <span class="font-bold text-md">Subtotal</span
+            ><span>{{ order.totalOrderPrice }}EGP</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-bold text-md">Shipping</span
+            ><span>{{ order.shippingPrice }}.00EGP</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-bold text-md">Tax</span
+            ><span>{{ order.taxPrice }}.00EGP</span>
+          </div>
+          <hr />
+          <div class="flex justify-between font-bold text-base">
+            <span class="text-md">Total</span
+            ><span>{{ order.totalOrderPrice }}EGP </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</section>

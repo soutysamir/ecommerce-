@@ -1,1 +1,112 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import 'ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
+
+@import 'ngx-toastr/toastr';
+:host ::-webkit-scrollbar {
+  width: 10px;
+}
+
+:host ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+:host ::-webkit-scrollbar-thumb {
+  background: #08c2ff;
+  border-radius: 15px;
+}
+
+
+
+:host {
+  scrollbar-color: #08c2ff #f1f1f1;
+  scrollbar-width: thin;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  opacity: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(8, 194, 255, 0.7);
+  border-radius: 15px;
+}
+
+body {
+  scrollbar-width: thin;
+}
+.ngx-pagination .current {
+  padding: .1875rem .625rem;
+  background: #2199e8;
+  color: #fefefe;
+  cursor: default;
+  border: #2199e8 1px;
+  border-radius: 50%;
+}
+.ngx-pagination a:hover, .ngx-pagination button:hover {
+    background: #e6e6e6;
+    border-radius: 50%;
+}
+.ngx-slider .ngx-slider-pointer {
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    top: -14px;
+    background-color:#FFF100 !important;
+    z-index: 3;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    border-radius: 16px;
+}
+.ngx-slider .ngx-slider-bubble {
+    cursor: default;
+    bottom: 25px !important;
+    padding: 1px 3px;
+    color: darkslategray !important;
+    font-size: 16px;
+
+}
+.ngx-slider .ngx-slider-bar
+
+ {
+    left: 0;
+    width: 100%;
+    height: 4px;
+    z-index: 1;
+    background: #d8e0f3;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.card{
+   button.cart{
+    transform: translateY(100%);
+    transition: all 0.5s;
+    opacity: 0;
+   }
+}
+.card:hover{
+  button.cart{
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+.animate-fadeIn {
+  animation: fadeIn 0.8s ease-in-out forwards;
+}

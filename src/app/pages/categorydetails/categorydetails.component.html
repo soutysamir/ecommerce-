@@ -1,0 +1,125 @@
+<section class="container mx-auto px-4 py-8">
+  <div class="flex flex-row gap-6 p-4">
+    <div class="basis-1/3">
+      <img
+        class="w-full h-[250px] bg-[#E8F9FF] p-3 object-contain hover:scale-105 hover:shadow-2xl animate-fadeIn rounded-2xl shadow-md overflow-hidden transition-all duration-[.5s]"
+        [src]="catDetails.image"
+        [alt]="catDetails.slug"
+      />
+    </div>
+    <div class="basis-2/3 p-6">
+      <h2 class="font-bold text-2xl capitalize">category Name :</h2>
+      <h3 class="font-medium text-xl capitalize mb-6 text-[#006BFF]">
+        {{ catDetails.name }}
+      </h3>
+      <h2 class="font-bold text-2xl capitalize">Created At :</h2>
+      <h3 class="font-medium text-xl capitalize text-[#006BFF] mb-8">
+        {{ catDetails.createdAt }}
+      </h3>
+      <button
+        routerLink="/products"
+        class="px-6 py-4 justify-end rounded-2xl text-xl font-semibold bg-[#FFF100]"
+      >
+        Shopping Now <i class="fa-brands fa-shopify font-medium text-xl"></i>
+      </button>
+    </div>
+  </div>
+  <div class="border-b-2 border-b-[#006BFF] m-4"></div>
+
+  <div>
+    @if (productData.length!==0) {
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-6">
+      @for (prod of productData; track prod.id) {
+      <div
+        class="bg-white hover:scale-105 hover:shadow-2xl animate-fadeIn rounded-md cursor-pointer transition-all duration-[.5s] overflow-hidden shadow-lg relative card flex flex-col justify-between min-h-[300px]"
+      >
+        <div [routerLink]="['/details', prod.id]">
+          <div class="m-2 bg-[#ccecf8] rounded-md">
+            <img
+              [src]="prod.imageCover"
+              class="w-full h-[220px] object-contain"
+              [alt]="prod.title"
+            />
+          </div>
+          <div class="card-body px-1 py-1">
+            <div>
+              <h4 class="text-xl px-2 font-bold text-[#006BFF]">
+                {{ prod.category.name }}
+              </h4>
+              <h3 class="font-semibold text-md px-2">
+                {{ prod.title.split(" ", 2).join(" ") }}
+              </h3>
+            </div>
+
+            <div class="flex items-center px-1 gap-1">
+              @for (star of getStarsArray(prod.ratingsAverage); track $index) {
+              <ng-container>
+                @if (star === 'full') {
+                <i class="fa-solid fa-star text-[#FFF100]"></i>
+                } @else if (star === 'half') {
+                <i class="fa-solid fa-star-half-stroke text-[#FFF100]"></i>
+                } @else {
+                <i class="fa-regular fa-star text-gray-400"></i>
+                }
+              </ng-container>
+              }
+              <span class="ml-2 font-semibold text-sm text-gray-600">
+                ({{ prod.ratingsQuantity }}+)
+              </span>
+            </div>
+            <div class="flex flex-col gap-2 px-1 mt-5">
+              <div class="flex items-center gap-3">
+                <span class="text-lg font-bold text-black">
+                  {{ prod.priceAfterDiscount || prod.price }}
+                  EGP
+                </span>
+
+                @if (prod.priceAfterDiscount) {
+                <span class="line-through font-semibold text-gray-500 text-md">
+                  {{ prod.price }} EGP
+                </span>
+                <span
+                  class="bg-[#08C2FF] text-black absolute top-48 left-2 text-xl font-bold px-2 py-1 rounded-sm"
+                >
+                  -{{ getSalePercentage(prod.price, prod.priceAfterDiscount) }}%
+                </span>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute top-1 right-0 p-1">
+          <button
+            class="w-[2.5rem] h-[40px] border absolute top-3 right-3 flex justify-center items-center z-30 rounded-full cursor-pointer"
+            (click)="addRemoveWishlist(prod.id!)"
+            [disabled]="isloadingWishlist()"
+          >
+            @if (isloadingWishlist() === prod.id ) {
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            }@else { @if (wishlistdata().includes(prod.id!)) {
+            <i class="fa-heart fa-solid text-2xl text-[#006BFF]"></i>
+
+            }@else if (!wishlistdata().includes(prod.id!)) {
+            <i class="fa-regular fa-heart text-2xl text-[#006BFF]"></i>
+
+            } }
+          </button>
+        </div>
+
+        <button
+          (click)="addToCart(prod._id)"
+          class="bg-[#08C2FF] cart text-lg font-semibold capitalize block mx-auto px-2 py-2 rounded-md w-full"
+        >
+          Add to Cart
+        </button>
+      </div>
+      }
+    </div>
+    }@else {
+    <div class="text-center container mx-20">
+      <img src="/images/no-item-found-here.png" alt="no product found" />
+    </div>
+    }
+  </div>
+</section>

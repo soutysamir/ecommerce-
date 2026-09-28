@@ -1,0 +1,307 @@
+<section class="mx-auto px-4 py-8">
+  <div
+    class="grid lg:grid-cols-[10%_minmax(30%,_1fr)_50%] gap-3 sm:grid-cols-[30%_minmax(60%,_1fr)] md:grid-cols-[30%_minmax(70%,_1fr)]"
+  >
+    <div class="order-2 sm:order-1">
+      <div
+        class="flex items-center lg:mt-10 md:mt-5 flex-row sm:flex-col gap-2 w-[20%] sm:w-[60%] md:w-[40%] lg:w-[70%] sm:mt-10 sm:mx-auto sm:p-2 ms-5"
+      >
+        @for (image of productDetails.images; track $index) {
+        <img
+          [src]="image"
+          [alt]="productDetails.title"
+          class="w-full cursor-pointer rounded-lg border-2 border-[#006BFF]"
+          (click)="changeImage(image)"
+        />
+        }
+      </div>
+    </div>
+    <div class="order-1 sm:order-2">
+      <div
+        id="controls-carousel"
+        class="relative w-full p-6"
+        data-carousel="static"
+      >
+        <!-- Carousel wrapper -->
+        <div
+          class="relative h-[550px] object-contain overflow-hidden rounded-lg md:h-[650px] md:object-contain"
+        >
+          <div class="absolute top-1 z-20 right-0 p-1">
+            <button
+              class="w-[2.5rem] h-[40px] border absolute top-3 shadow-lg right-3 flex justify-center items-center z-30 rounded-full cursor-pointer"
+              (click)="addRemoveWishlist(productDetails._id!)"
+              [disabled]="isloadingWishlist()"
+            >
+              @if (isloadingWishlist() === productDetails._id ) {
+              <i class="fa-solid fa-spinner fa-spin"></i>
+              }@else { @if (wishlistdata().includes(productDetails._id!)) {
+              <i class="fa-heart fa-solid text-2xl text-[#006BFF]"></i>
+
+              }@else if (!wishlistdata().includes(productDetails._id!)) {
+              <i class="fa-regular fa-heart text-2xl text-[#006BFF]"></i>
+
+              } }
+            </button>
+          </div>
+          <!-- Item 1 -->
+          <div class="duration-700 ease-in-out" data-carousel-item>
+            <img
+              [src]="currentImage"
+              class="absolute block p-2 w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+              [alt]="productDetails.slug"
+            />
+          </div>
+        </div>
+        <!-- Slider controls -->
+        <button
+          type="button"
+          class="absolute top-0 start-0 z-30 flex items-center my-[60%] justify-center px-4 cursor-pointer"
+          data-carousel-prev
+          (click)="prevImage()"
+        >
+          <span
+            class="inline-flex items-center justify-center bg-slate-100 shadow-lg transition-all duration-300 text-[#006BFF] hover:text-white w-10 h-10 rounded-full dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 hover:bg-[#006BFF] dark:group-focus:ring-gray-800/70"
+          >
+            <svg
+              class="w-4 h-4 dark:text-gray-800 rtl:rotate-180"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 1 1 5l4 4"
+              />
+            </svg>
+            <span class="sr-only">Previous</span>
+          </span>
+        </button>
+        <button
+          type="button"
+          class="absolute top-0 end-0 z-30 flex items-center justify-center my-[60%] px-4 cursor-pointer group focus:outline-none"
+          data-carousel-next
+          (click)="nextImage()"
+        >
+          <span
+            class="inline-flex items-center transition-all duration-300 justify-center text-[#006BFF] hover:text-white bg-slate-100 shadow-lg hover:bg-[#006BFF] w-10 h-10 rounded-full dark:bg-gray-800/30"
+          >
+            <svg
+              class="w-4 h-4 dark:text-gray-800 rtl:rotate-180"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 9 4-4-4-4"
+              />
+            </svg>
+            <span class="sr-only">Next</span>
+          </span>
+        </button>
+      </div>
+    </div>
+    <div class="order-3 my-[10%] px-5">
+      <h4 class="text-xl font-medium mb-3">
+        <i class="fa-solid fa-star text-[#FFF100]"></i>
+        {{ productDetails.ratingsAverage
+        }}<span class="text-xl">({{ productDetails.ratingsQuantity }}+)</span>
+      </h4>
+      <h2 class="text-[#006BFF] capitalize font-sans font-bold text-3xl">
+        {{ productDetails.title }}
+      </h2>
+      <p class="text-lg font-medium mt-5 text-slate-400 mb-5 dark:text-white">
+        {{ productDetails.description.split(" ", 20).join(" ") }}...
+      </p>
+      <h3 class="text-black font-bold text-lg mb-5">
+        Quantity:
+        <span class="text-[#006BFF] font-semibold text-md">{{
+          productDetails.quantity
+        }}</span>
+      </h3>
+      <div class="flex max-w-[25%] p-2 rounded-2 justify-between items-center">
+        <span class="font-bold text-lg">Count:</span>
+        <div
+          class="flex items-center font-semibold text-md gap-3 border-2 w-fit rounded-md border-[#006BFF]"
+        >
+          <button
+            (click)="decreaseQuantity()"
+            class="hover:bg-[#006BFF] transition duration-[1s] px-2 py-1 rounded"
+          >
+            -
+          </button>
+          <span>{{ quantity }}</span>
+          <button
+            (click)="increaseQuantity()"
+            class="hover:bg-[#006BFF] transition duration-[1s] px-2 py-1 rounded"
+          >
+            +
+          </button>
+        </div>
+      </div>
+      <div
+        class="flex max-w-[26%] p-1 mt-5 rounded-2 justify-between items-center"
+      >
+        <span class="font-bold text-lg">Total Price:</span>
+        <span class="font-semibold text-lg text-[#006BFF]">
+          {{ totalPrice }}EGP</span
+        >
+      </div>
+      <button
+        (click)="addToCart(productDetails._id)"
+        class="bg-[#08C2FF] text-lg font-semibold capitalize mt-5 px-4 py-2 rounded-md"
+      >
+        Add to Cart
+      </button>
+    </div>
+  </div>
+  <div class="container mx-auto px-4 py-8">
+    <h2 class="text-4xl font-bold p-4">Similar products</h2>
+
+    @if (SimiProducts.length!==0) {
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-6">
+      @for (prod of SimiProducts.slice(0,5); track prod.id) {
+      <div
+        class="bg-white hover:scale-105 hover:shadow-2xl animate-fadeIn rounded-md cursor-pointer transition-all duration-[.5s] overflow-hidden shadow-lg relative card flex flex-col justify-between min-h-[300px]"
+      >
+        <div [routerLink]="['/details', prod.id]">
+          <div class="m-2 bg-[#ccecf8] rounded-md">
+            <img
+              [src]="prod.imageCover"
+              class="w-full h-[220px] object-contain"
+              [alt]="prod.title"
+            />
+          </div>
+          <div class="card-body px-1 py-1">
+            <div>
+              <h4 class="text-xl px-2 font-bold text-[#006BFF]">
+                {{ prod.category.name }}
+              </h4>
+              <h3 class="font-semibold text-md px-2">
+                {{ prod.title.split(" ", 2).join(" ") }}
+              </h3>
+            </div>
+
+            <div class="flex items-center px-1 gap-1">
+              @for (star of getStarsArray(prod.ratingsAverage); track $index) {
+              <ng-container>
+                @if (star === 'full') {
+                <i class="fa-solid fa-star text-[#FFF100]"></i>
+                } @else if (star === 'half') {
+                <i class="fa-solid fa-star-half-stroke text-[#FFF100]"></i>
+                } @else {
+                <i class="fa-regular fa-star text-gray-400"></i>
+                }
+              </ng-container>
+              }
+              <span class="ml-2 font-semibold text-sm text-gray-600">
+                ({{ prod.ratingsQuantity }}+)
+              </span>
+            </div>
+            <div class="flex flex-col gap-2 px-1 mt-5">
+              <div class="flex items-center gap-3">
+                <span class="text-lg font-bold text-black">
+                  {{ prod.priceAfterDiscount || prod.price }}
+                  EGP
+                </span>
+
+                @if (prod.priceAfterDiscount) {
+                <span class="line-through font-semibold text-gray-500 text-md">
+                  {{ prod.price }} EGP
+                </span>
+                <span
+                  class="bg-[#08C2FF] text-black absolute top-48 left-2 text-xl font-bold px-2 py-1 rounded-sm"
+                >
+                  -{{ getSalePercentage(prod.price, prod.priceAfterDiscount) }}%
+                </span>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute top-1 right-0 p-1">
+          <button
+            class="w-[2.5rem] h-[40px] border absolute top-3 right-3 flex justify-center items-center z-30 rounded-full cursor-pointer"
+            (click)="addRemoveWishlist(prod.id!)"
+            [disabled]="isloadingWishlist()"
+          >
+            @if (isloadingWishlist() === prod.id ) {
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            }@else { @if (wishlistdata().includes(prod.id!)) {
+            <i class="fa-heart fa-solid text-2xl text-[#006BFF]"></i>
+
+            }@else if (!wishlistdata().includes(prod.id!)) {
+            <i class="fa-regular fa-heart text-2xl text-[#006BFF]"></i>
+
+            } }
+          </button>
+        </div>
+
+        <button
+          (click)="addToCart(prod._id)"
+          class="bg-[#08C2FF] cart text-lg font-semibold capitalize block mx-auto px-2 py-2 rounded-md w-full"
+        >
+          Add to Cart
+        </button>
+      </div>
+      }
+    </div>
+    }@else {
+    <div class="text-center container mx-20">
+      <img src="/images/no-item-found-here.png" alt="no product found" />
+    </div>
+    }
+  </div>
+</section>
+
+<section>
+  <div class="flex flex-col gap-2 mt-5">
+    <div class="flex items-center gap-3">
+      <span class="text-lg font-bold text-green-700">
+        {{ productDetails.priceAfterDiscount || productDetails.price }} EGP
+      </span>
+
+      @if (productDetails.priceAfterDiscount) {
+      <span class="line-through text-gray-500 text-sm">
+        {{ productDetails.price }} EGP
+      </span>
+      <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+        -{{
+          getSalePercentage(
+            productDetails.price,
+            productDetails.priceAfterDiscount
+          )
+        }}%
+      </span>
+      }
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="flex items-center gap-1">
+    @for (star of getStarsArray(productDetails.ratingsAverage); track $index) {
+    <ng-container>
+      @if (star === 'full') {
+      <i class="fa-solid fa-star text-[#FFF100]"></i>
+      } @else if (star === 'half') {
+      <i class="fa-solid fa-star-half-stroke text-[#FFF100]"></i>
+      } @else {
+      <i class="fa-regular fa-star text-gray-400"></i>
+      }
+    </ng-container>
+    }
+    <span class="ml-2 text-sm text-gray-600">
+      ({{ productDetails.ratingsQuantity }} reviews)
+    </span>
+  </div>
+</section>

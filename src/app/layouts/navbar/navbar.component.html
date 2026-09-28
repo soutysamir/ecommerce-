@@ -1,0 +1,208 @@
+<nav
+  class="bg-[#E8F9FF] dark:bg-gray-900 fixed top-0 left-0 w-full z-50 transition duration-300 ease-in-out shadow-xl"
+>
+  <div
+    class="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4"
+  >
+    <a href="" class="flex items-center space-x-3 rtl:space-x-reverse">
+      <img src="./images/blue.png" class="h-8" alt="FreshCart logo " />
+      <span class="self-center text-2xl font-bold dark:text-white"
+        >FreshCart</span
+      >
+    </a>
+
+    <button
+      data-collapse-toggle="navbar-default"
+      type="button"
+      class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+      aria-controls="navbar-default"
+      aria-expanded="false"
+      (click)="clickedBtn()"
+    >
+      <span class="sr-only">Open main menu</span>
+      <svg
+        class="w-5 h-5"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 17 14"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M1 1h15M1 7h15M1 13h15"
+        />
+      </svg>
+    </button>
+    <div
+      class="w-[80%] items-center md:flex flex-grow md:w-auto mx-4"
+      id="navbar-default"
+      [class.hidden]="!clicked"
+    >
+      @if (isLogin()) {
+      <ul
+        class="flex flex-col mx-6 p-4 md:p-0 mt-4 md:flex-row md:space-x-4 rtl:space-x-reverse md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+      >
+        <li>
+          <a
+            routerLink="/home"
+            routerLinkActive="bg-[#08C2FF] rounded-md "
+            class="capitalize block py-2 px-3 text-black dark:text-white p-5"
+            aria-current="page"
+            >home</a
+          >
+        </li>
+
+        <li>
+          <a
+            routerLink="/products"
+            routerLinkActive="bg-[#08C2FF] rounded-md "
+            class="capitalize block py-2 px-3 text-black dark:text-white"
+            aria-current="page"
+            >products</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/categories"
+            routerLinkActive="bg-[#08C2FF] rounded-md "
+            class="capitalize block py-2 px-3 text-black dark:text-white"
+            aria-current="page"
+            >categories</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/brands"
+            routerLinkActive="bg-[#08C2FF] rounded-md "
+            class="capitalize block py-2 px-3 text-black dark:text-white"
+            aria-current="page"
+            >brands</a
+          >
+        </li>
+      </ul>
+      }
+
+      <ul
+        class="flex flex-col items-center p-4 ms-auto md:p-0 mt-4 md:flex-row md:space-x-3 rtl:space-x-reverse md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+      >
+        <li>
+          <a
+            class="capitalize block text-black md:p-0 dark:text-white"
+            aria-current="page"
+          >
+            <i class="fab fa-instagram font-semibold"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            class="capitalize block text-black md:p-0 dark:text-white"
+            aria-current="page"
+          >
+            <i class="fab fa-facebook"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            class="capitalize block text-black md:p-0 dark:text-white"
+            aria-current="page"
+          >
+            <i class="fab fa-twitter"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            class="capitalize block text-black md:p-0 dark:text-white"
+            aria-current="page"
+          >
+            <i class="fab fa-linkedin"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            class="capitalize block text-black dark:text-white"
+            aria-current="page"
+          >
+            <button
+              (click)="themeService.toggleTheme()"
+              class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 transition"
+              [attr.aria-label]="isDark() ? 'Light mode' : 'Dark mode'"
+            >
+              @if (!isDark()) {
+              <span>🌞</span>
+              } @else { <span>🌙</span>}
+            </button>
+          </a>
+        </li>
+        <li>
+          <a
+            class="capitalize block text-black dark:text-white"
+            aria-current="page"
+          >
+            <i class="fab fa-youtube"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="/wishlist"
+            routerLinkActive=" "
+            class="capitalize block ps-3 relative dark:text-white"
+            aria-current="page"
+            ><i class="fa-solid fa-heart text-2xl text-[#006BFF]"></i>
+            <span
+              class="bg-[#FFF100] text-black text-xs font-medium me-2 px-2 py-1 absolute top-[-9px] left-[-5px] rounded-full dark:bg-[#FFF100] dark:text-black"
+              >{{ wishlistnumber }}</span
+            ></a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/cart"
+            routerLinkActive=" "
+            class="capitalize block relative dark:text-white"
+            aria-current="page"
+            ><i class="fas fa-cart-shopping text-2xl text-[#006BFF]"></i>
+            <span
+              class="bg-[#FFF100] text-black text-xs font-medium me-2 px-2 py-1 absolute top-[-11px] left-[-9px] rounded-full dark:bg-[#FFF100] dark:text-black"
+              >{{ cartNumber }}</span
+            >
+          </a>
+        </li>
+
+        @if (!isLogin()) {
+        <li>
+          <a
+            routerLink="/login"
+            routerLinkActive="bg-[#08C2FF] rounded-md "
+            class="capitalize block py-2 px-3 text-black dark:text-white"
+            aria-current="page"
+            >login</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/register"
+            routerLinkActive="bg-[#08C2FF] rounded-md "
+            class="capitalize block py-2 px-3 text-black dark:text-white"
+            aria-current="page"
+            >register</a
+          >
+        </li>
+        } @else {
+        <li>
+          <a
+            role="button"
+            class="capitalize block py-2 px-4 text-black dark:text-white"
+            aria-current="page"
+            (click)="logout()"
+            >logout</a
+          >
+        </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>
+>
